@@ -1,0 +1,143 @@
+{
+  "generated_at_unix": 1788179558,
+  "host": "http://127.0.0.1:11434",
+  "results": [
+    {
+      "cases": [
+        {
+          "case": "classifier_handoff",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 294,
+          "leaked_reasoning": false,
+          "output": "Resuming Classifier Benchmark Handoff",
+          "passed": true
+        },
+        {
+          "case": "rust_port",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 195,
+          "leaked_reasoning": false,
+          "output": "Porting Python Telegram Script To Rust",
+          "passed": true
+        },
+        {
+          "case": "dns_debug",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 205,
+          "leaked_reasoning": false,
+          "output": "Cloudflare DNS Subdomain Not Resolving",
+          "passed": true
+        },
+        {
+          "case": "pr_review",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 176,
+          "leaked_reasoning": false,
+          "output": "Reviewing Webhook Signature PR",
+          "passed": true
+        },
+        {
+          "case": "groceries_nontechnical",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 173,
+          "leaked_reasoning": false,
+          "output": "Weekly Meal Planning and Grocery List",
+          "passed": true
+        },
+        {
+          "case": "portuguese_input",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 181,
+          "leaked_reasoning": false,
+          "output": "Configurando Cron Job Diário",
+          "passed": true
+        }
+      ],
+      "empty_content_count": 0,
+      "error": null,
+      "leaked_reasoning_count": 0,
+      "mean_latency_ms": 204,
+      "median_latency_ms": 188,
+      "model": "hf.co/ornith-ai/Ornith-1.5-35B-A3B-GGUF:Q5_K_M",
+      "pass_rate": 1.0,
+      "passed": 6,
+      "task": "title_generation",
+      "total": 6
+    },
+    {
+      "cases": [
+        {
+          "case": "classifier_handoff",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 12007,
+          "leaked_reasoning": false,
+          "output": "Classifier Benchmark Handoff Resumed",
+          "passed": true
+        },
+        {
+          "case": "rust_port",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 178,
+          "leaked_reasoning": false,
+          "output": "Python to Rust Telegram Port",
+          "passed": true
+        },
+        {
+          "case": "dns_debug",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 188,
+          "leaked_reasoning": false,
+          "output": "Cloudflare Subdomain DNS Troubleshooting",
+          "passed": true
+        },
+        {
+          "case": "pr_review",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 190,
+          "leaked_reasoning": false,
+          "output": "HMAC Webhook Verification Review",
+          "passed": true
+        },
+        {
+          "case": "groceries_nontechnical",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 179,
+          "leaked_reasoning": false,
+          "output": "Weekly Meal and Grocery Plan",
+          "passed": true
+        },
+        {
+          "case": "portuguese_input",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 192,
+          "leaked_reasoning": false,
+          "output": "Configurando Cron Job Diário",
+          "passed": true
+        }
+      ],
+      "empty_content_count": 0,
+      "error": null,
+      "leaked_reasoning_count": 0,
+      "mean_latency_ms": 2155,
+      "median_latency_ms": 189,
+      "model": "gemma4:26b",
+      "pass_rate": 1.0,
+      "passed": 6,
+      "task": "title_generation",
+      "total": 6
+    }
+  ],
+  "task": "title_generation"
+}

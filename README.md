@@ -92,6 +92,29 @@ A model is only declared WINNER at a **100% pass rate**, tie-broken by latency.
 A partial pass prints `NO CLEAN WINNER` rather than a recommendation — a slot
 that works 4 times out of 6 is a slot that fails silently in production.
 
+## Latency is only trustworthy on an idle machine
+
+Measured latency here is *wall time against a shared Ollama server*, so it
+reports whatever the machine was doing at the time. Observed spread for the
+same two models on the same suite:
+
+| condition | Ornith median | gemma4 median |
+|---|---|---|
+| contended (other models resident, benchmark racing itself) | 16606ms | 17180ms |
+| idle machine, warm | 188ms | 189ms |
+
+That is a ~90x swing on identical work, and it is large enough to *invert the
+ranking* between two models that are genuinely within noise of each other.
+
+Rules that follow from this:
+
+- Run on an idle machine. Check `ollama ps` first and don't benchmark while
+  another model is resident or another run is in flight.
+- Repeat with `--models` order swapped. If the ranking flips, the difference is
+  noise, not signal.
+- Treat pass rate as the primary metric and latency as a tiebreaker only when
+  the gap is large and reproducible across runs.
+
 ## Adding a new slot
 
 When a new auxiliary slot needs a model, write `suites/<slot>.json` with 5-6

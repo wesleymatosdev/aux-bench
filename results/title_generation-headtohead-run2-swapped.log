@@ -1,0 +1,33 @@
+suite: title_generation (6 cases)
+       Hermes auxiliary title_generation: produce a short conversation title. Must emit the title in content, not leak chain-of-thought.
+host:  http://127.0.0.1:11434
+models (2): gemma4:26b, hf.co/ornith-ai/Ornith-1.5-35B-A3B-GGUF:Q5_K_M
+
+== gemma4:26b
+   classifier_handoff     pass  12007ms  Classifier Benchmark Handoff Resumed
+   rust_port              pass    178ms  Python to Rust Telegram Port
+   dns_debug              pass    188ms  Cloudflare Subdomain DNS Troubleshooting
+   pr_review              pass    190ms  HMAC Webhook Verification Review
+   groceries_nontechnical pass    179ms  Weekly Meal and Grocery Plan
+   portuguese_input       pass    192ms  Configurando Cron Job Diário
+   pass 6/6  median 189ms
+
+== hf.co/ornith-ai/Ornith-1.5-35B-A3B-GGUF:Q5_K_M
+   classifier_handoff     pass    294ms  Resuming Classifier Benchmark Handoff
+   rust_port              pass    195ms  Porting Python Telegram Script To Rust
+   dns_debug              pass    205ms  Cloudflare DNS Subdomain Not Resolving
+   pr_review              pass    176ms  Reviewing Webhook Signature PR
+   groceries_nontechnical pass    173ms  Weekly Meal Planning and Grocery List
+   portuguese_input       pass    181ms  Configurando Cron Job Diário
+   pass 6/6  median 188ms
+
+
+RESULTS — title_generation
+model                                              pass    median      mean   empty    leak
+--------------------------------------------------------------------------------------------
+hf.co/ornith-ai/Ornith-1.5-35B-A3B-GGUF:Q5_K_M       6/6      188ms      204ms       0       0
+gemma4:26b                                           6/6      189ms     2155ms       0       0
+
+WINNER: hf.co/ornith-ai/Ornith-1.5-35B-A3B-GGUF:Q5_K_M — 6/6 cases, 188ms median
+
+wrote results/title_generation-headtohead-run2-swapped.json

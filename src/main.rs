@@ -281,15 +281,23 @@ fn run_model(
 
     // Warm-up: load weights into RAM so the first scored case measures
     // generation, not a multi-GB cold load off disk.
-    let _ = chat(
-        host,
-        model,
-        "Reply with OK.",
-        "ping",
-        &suite.options,
-        timeout_s,
-        keep_alive,
-    );
+    //
+    // Two warm-ups, not one. The first triggers the cold load; the second
+    // confirms it settled. With a single warm-up the first scored case still
+    // absorbed ~12s of load on 20GB+ models, which is enough to move the
+    // median and invert the ranking between models that are otherwise within
+    // noise of each other.
+    for _ in 0..2 {
+        let _ = chat(
+            host,
+            model,
+            "Reply with OK.",
+            "ping",
+            &suite.options,
+            timeout_s,
+            keep_alive,
+        );
+    }
 
     for case in &suite.cases {
         let started = Instant::now();
