@@ -14,6 +14,29 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 
 const DEFAULT_HOST: &str = "http://127.0.0.1:11434";
+const DEFAULT_OPENAI_HOST: &str = "http://127.0.0.1:11435";
+
+/// Which wire protocol to speak.
+///
+/// `Ollama` uses the native `/api/chat`, which exposes a separate `thinking`
+/// field so leaked chain-of-thought is distinguishable from the answer.
+/// `OpenAi` uses `/v1/chat/completions`, which covers Kronk (llama.cpp) and
+/// any hosted OpenAI-compatible endpoint. Some servers surface reasoning in a
+/// non-standard `reasoning` field there; we read it when present.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+enum Api {
+    Ollama,
+    OpenAi,
+}
+
+impl Api {
+    fn as_str(&self) -> &'static str {
+        match self {
+            Api::Ollama => "ollama",
+            Api::OpenAi => "openai",
+        }
+    }
+}
 
 #[derive(Debug, Deserialize)]
 struct Suite {
@@ -77,10 +100,26 @@ fn main() {
     let mut out: Option<PathBuf> = None;
     let mut timeout_s: u64 = 300;
     let mut keep_alive = "5m".to_string();
+    let mut api = Api::Ollama;
+    let mut host_explicit = false;
 
     let mut i = 0;
     while i < args.len() {
         match args[i].as_str() {
+            "--api" => {
+                i += 1;
+                match args.get(i).map(|s| s.as_str()) {
+                    Some("ollama") => api = Api::Ollama,
+                    Some("openai") => api = Api::OpenAi,
+                    other => {
+                        eprintln!(
+                            "error: --api must be 'ollama' or 'openai' (got {:?})",
+                            other.unwrap_or("")
+                        );
+                        std::process::exit(2);
+                    }
+                }
+            }
             "--suite" => {
                 i += 1;
                 suite_path = args.get(i).map(PathBuf::from);
@@ -99,6 +138,7 @@ fn main() {
                 i += 1;
                 if let Some(v) = args.get(i) {
                     host = v.clone();
+                    host_explicit = true;
                 }
             }
             "--out" => {
@@ -143,8 +183,14 @@ fn main() {
         }
     };
 
+    // --api openai implies a different default port (Kronk 11435 vs Ollama
+    // 11434); an explicit --host always wins.
+    if api == Api::OpenAi && !host_explicit && std::env::var("OLLAMA_HOST").is_err() {
+        host = DEFAULT_OPENAI_HOST.to_string();
+    }
+
     if models.is_empty() {
-        models = match discover_local_models(&host, timeout_s) {
+        models = match discover_local_models(&host, timeout_s, api) {
             Ok(m) => m,
             Err(e) => {
                 eprintln!("error: could not list models from {host}: {e}");
@@ -162,14 +208,14 @@ fn main() {
     if !suite.description.is_empty() {
         eprintln!("       {}", suite.description);
     }
-    eprintln!("host:  {host}");
+    eprintln!("host:  {host} ({})", api.as_str());
     eprintln!("models ({}): {}", models.len(), models.join(", "));
     eprintln!();
 
     let mut results: Vec<ModelResult> = Vec::new();
     for model in &models {
         eprintln!("== {model}");
-        let r = run_model(&host, model, &suite, timeout_s, &keep_alive);
+        let r = run_model(&host, model, &suite, timeout_s, &keep_alive, api);
         for c in &r.cases {
             let mark = if c.passed { "pass" } else { "FAIL" };
             eprintln!(
@@ -188,7 +234,7 @@ fn main() {
             r.passed, r.total, r.median_latency_ms
         );
         // Free VRAM between models: large local models cannot be co-resident.
-        unload(&host, model, timeout_s);
+        unload(&host, model, timeout_s, api);
         results.push(r);
     }
 
@@ -197,6 +243,7 @@ fn main() {
     if let Some(path) = out {
         let payload = json!({
             "task": suite.task,
+            "api": api.as_str(),
             "host": host,
             "generated_at_unix": std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
@@ -219,15 +266,21 @@ fn print_help() {
         "aux-bench — benchmark local models for Hermes auxiliary slots
 
 USAGE:
-  aux-bench --suite <file.json> [--models a,b,c] [--host URL] [--out results.json]
-            [--timeout SECS] [--keep-alive DUR]
+  aux-bench --suite <file.json> [--api ollama|openai] [--models a,b,c] [--host URL]
+            [--out results.json] [--timeout SECS] [--keep-alive DUR]
 
   --suite       Suite JSON describing the auxiliary task and its cases (required).
+  --api         Wire protocol: 'ollama' (default, native /api/chat) or 'openai'
+                (/v1/chat/completions -- Kronk, llama.cpp, hosted endpoints).
   --models      Comma-separated model tags. Default: all local (non-:cloud, non-embed) models.
-  --host        Ollama base URL. Default $OLLAMA_HOST or {DEFAULT_HOST}.
+  --host        Server base URL. Default $OLLAMA_HOST, else {DEFAULT_HOST}
+                (ollama) or {DEFAULT_OPENAI_HOST} (openai).
   --out         Write full per-case results as JSON.
   --timeout     Per-request timeout in seconds. Default 300.
-  --keep-alive  Ollama keep_alive for each request. Default \"0\" (unload right after)."
+  --keep-alive  Ollama keep_alive for each request. Default \"5m\". Ignored for --api openai.
+
+ENV
+  AUX_BENCH_API_KEY   Bearer token sent with --api openai requests (for hosted endpoints)."
     );
 }
 
@@ -237,28 +290,55 @@ fn load_suite(path: &Path) -> Result<Suite, String> {
 }
 
 /// Local models only: `:cloud` tags are remote and embedding models cannot chat.
-fn discover_local_models(host: &str, timeout_s: u64) -> Result<Vec<String>, String> {
-    let url = format!("{host}/api/tags");
-    let body: Value = agent(timeout_s)
-        .get(&url)
-        .call()
-        .map_err(|e| e.to_string())?
-        .body_mut()
-        .read_json()
-        .map_err(|e| e.to_string())?;
+fn discover_local_models(host: &str, timeout_s: u64, api: Api) -> Result<Vec<String>, String> {
+    match api {
+        Api::OpenAi => {
+            let url = format!("{}/v1/models", host.trim_end_matches('/'));
+            let body: Value = agent(timeout_s)
+                .get(&url)
+                .call()
+                .map_err(|e| e.to_string())?
+                .body_mut()
+                .read_json()
+                .map_err(|e| e.to_string())?;
 
-    let mut out = Vec::new();
-    if let Some(arr) = body.get("models").and_then(|m| m.as_array()) {
-        for m in arr {
-            if let Some(name) = m.get("name").and_then(|n| n.as_str()) {
-                if name.contains(":cloud") || name.contains("embed") {
-                    continue;
+            let mut out = Vec::new();
+            if let Some(arr) = body.get("data").and_then(|m| m.as_array()) {
+                for m in arr {
+                    if let Some(id) = m.get("id").and_then(|n| n.as_str()) {
+                        if id.contains("embed") || id.contains("rerank") {
+                            continue;
+                        }
+                        out.push(id.to_string());
+                    }
                 }
-                out.push(name.to_string());
             }
+            Ok(out)
+        }
+        Api::Ollama => {
+            let url = format!("{host}/api/tags");
+            let body: Value = agent(timeout_s)
+                .get(&url)
+                .call()
+                .map_err(|e| e.to_string())?
+                .body_mut()
+                .read_json()
+                .map_err(|e| e.to_string())?;
+
+            let mut out = Vec::new();
+            if let Some(arr) = body.get("models").and_then(|m| m.as_array()) {
+                for m in arr {
+                    if let Some(name) = m.get("name").and_then(|n| n.as_str()) {
+                        if name.contains(":cloud") || name.contains("embed") {
+                            continue;
+                        }
+                        out.push(name.to_string());
+                    }
+                }
+            }
+            Ok(out)
         }
     }
-    Ok(out)
 }
 
 fn agent(timeout_s: u64) -> ureq::Agent {
@@ -274,6 +354,7 @@ fn run_model(
     suite: &Suite,
     timeout_s: u64,
     keep_alive: &str,
+    api: Api,
 ) -> ModelResult {
     let mut cases = Vec::new();
     let mut latencies: Vec<u128> = Vec::new();
@@ -296,6 +377,7 @@ fn run_model(
             &suite.options,
             timeout_s,
             keep_alive,
+            api,
         );
     }
 
@@ -309,6 +391,7 @@ fn run_model(
             &suite.options,
             timeout_s,
             keep_alive,
+            api,
         );
         let latency_ms = started.elapsed().as_millis();
 
@@ -372,6 +455,99 @@ fn run_model(
 /// separate `thinking` field when the model honours think:false; models that
 /// ignore it dump chain-of-thought straight into content.
 fn chat(
+    host: &str,
+    model: &str,
+    system: &str,
+    user: &str,
+    options: &Value,
+    timeout_s: u64,
+    keep_alive: &str,
+    api: Api,
+) -> Result<(String, String), String> {
+    match api {
+        Api::Ollama => chat_ollama(host, model, system, user, options, timeout_s, keep_alive),
+        Api::OpenAi => chat_openai(host, model, system, user, options, timeout_s),
+    }
+}
+
+/// OpenAI-compatible `/v1/chat/completions`. Used for Kronk (llama.cpp) and any
+/// hosted endpoint. `num_predict` is translated to `max_tokens`; there is no
+/// portable `think:false` here, so a reasoning model's leakage shows up in
+/// content exactly as a user of that endpoint would see it.
+fn chat_openai(
+    host: &str,
+    model: &str,
+    system: &str,
+    user: &str,
+    options: &Value,
+    timeout_s: u64,
+) -> Result<(String, String), String> {
+    let url = format!("{}/v1/chat/completions", host.trim_end_matches('/'));
+    let mut payload = json!({
+        "model": model,
+        "messages": [
+            { "role": "system", "content": system },
+            { "role": "user", "content": user }
+        ],
+        "stream": false,
+    });
+
+    if let Some(obj) = options.as_object() {
+        if let Some(n) = obj.get("num_predict").and_then(|v| v.as_i64()) {
+            payload["max_tokens"] = json!(n);
+        }
+        if let Some(t) = obj.get("temperature") {
+            payload["temperature"] = t.clone();
+        }
+    }
+
+    let mut req = agent(timeout_s)
+        .post(&url)
+        .header("Content-Type", "application/json");
+    if let Ok(key) = std::env::var("AUX_BENCH_API_KEY") {
+        if !key.is_empty() {
+            req = req.header("Authorization", &format!("Bearer {key}"));
+        }
+    }
+
+    let mut resp = req.send_json(payload).map_err(|e| e.to_string())?;
+    let body: Value = resp.body_mut().read_json().map_err(|e| e.to_string())?;
+
+    if let Some(err) = body.get("error") {
+        let msg = err
+            .get("message")
+            .and_then(|m| m.as_str())
+            .unwrap_or(&err.to_string())
+            .to_string();
+        return Err(msg);
+    }
+
+    let msg = body
+        .get("choices")
+        .and_then(|c| c.as_array())
+        .and_then(|a| a.first())
+        .and_then(|c| c.get("message"))
+        .cloned()
+        .unwrap_or(Value::Null);
+
+    let content = msg
+        .get("content")
+        .and_then(|c| c.as_str())
+        .unwrap_or("")
+        .trim()
+        .to_string();
+    let reasoning = msg
+        .get("reasoning_content")
+        .or_else(|| msg.get("reasoning"))
+        .and_then(|c| c.as_str())
+        .unwrap_or("")
+        .trim()
+        .to_string();
+
+    Ok((content, reasoning))
+}
+
+fn chat_ollama(
     host: &str,
     model: &str,
     system: &str,
@@ -466,7 +642,12 @@ fn score(content: &str, reasoning: &str, case: &Case) -> (bool, Vec<String>, boo
     (failures.is_empty(), failures, empty, leaked)
 }
 
-fn unload(host: &str, model: &str, timeout_s: u64) {
+fn unload(host: &str, model: &str, timeout_s: u64, api: Api) {
+    // Only Ollama exposes an unload primitive; llama.cpp-backed servers manage
+    // residency themselves.
+    if api != Api::Ollama {
+        return;
+    }
     let url = format!("{host}/api/generate");
     let _ = agent(timeout_s)
         .post(&url)
