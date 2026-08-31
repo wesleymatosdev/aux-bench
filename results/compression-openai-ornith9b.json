@@ -1,0 +1,75 @@
+{
+  "api": "openai",
+  "generated_at_unix": 1788182081,
+  "host": "http://127.0.0.1:11435",
+  "results": [
+    {
+      "cases": [
+        {
+          "case": "debug_session",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 6193,
+          "leaked_reasoning": false,
+          "output": "- Benchmark failed with 'unrecognized arguments: --suite' because committed bench/benchmark.py lacks the --suite flag (verified via `git show HEAD:bench/benchmark.py | grep -c suite` = 0).\n- Decision: commit the harness first, then prompt v2 separately so v0.1 vs v2 becomes a checkout choice.\n- Harness is prompt-agnostic; only __init__.py holds the prompt.\n- User agreed to commit bench/benchmark.py first.",
+          "passed": true,
+          "truncated": false
+        },
+        {
+          "case": "config_decision",
+          "empty_content": false,
+          "failures": [
+            "TRUNCATED: token budget exhausted before completion — raise num_predict in the suite (harness fault, not a model verdict)"
+          ],
+          "latency_ms": 7752,
+          "leaked_reasoning": false,
+          "output": "- Auxiliary title generation failing with HTTP 404 on model deepseek-v4-flash:cloud, which is dead and on the do-not-use list.\n- Nine auxiliary slots pinned to that model: approval, compression, curator, kanban_decomposer, mcp, profile_describer, skills_hub, title_generation, triage_specifier, web_extract.\n- Only vision is healthy on gpt-5.4-nano via copilot.\n- Tested local models qwen3:30b, gemma4:26b, qwen3-30b-64k — all leak chain-of-thought into the content field and return empty titles, ignoring think:false on both OpenAI-compat and native Ollama routes.\n-",
+          "passed": false,
+          "truncated": true
+        },
+        {
+          "case": "code_review",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 5537,
+          "leaked_reasoning": false,
+          "output": "- Reviewed webhook signature code in webhook.rs, finding three issues.\n- verify_signature used == for HMAC digest comparison (timing-attack vulnerable); switched to constant-time compare.\n- Timestamp check accepted any age; now rejects requests older than 300 seconds.\n- Missing X-Hub-Signature-256 header returned Ok(()) instead of an error, letting unsigned requests pass; now returns an error (critical fix).\n- All three fixed in commit e485795 with three passing tests covering each case.",
+          "passed": true,
+          "truncated": false
+        },
+        {
+          "case": "planning_thread",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 5173,
+          "leaked_reasoning": false,
+          "output": "- Repo is ready for public release except the actual push; it sits at main afed308 locally and has never been pushed to the wesleymatosdev org.\n- MIT license file is in place and READMEs are rewritten.\n- Six security findings were fixed and verified across commits aeeb1d5 and afed308.\n- Secrets scan came back clean.\n- No technical blockers; the lagune-audit connector at ~/.hermes/scripts/lagune-audit.sh was built but never validated (first run died on a session limit), separate from the push.",
+          "passed": true,
+          "truncated": false
+        },
+        {
+          "case": "portuguese_thread",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 4424,
+          "leaked_reasoning": false,
+          "output": "- Usuário pediu para configurar um cron para rodar todo dia de manhã.\n- Job criado com schedule '0 9 * * *', executando às 9h no fuso America/Sao_Paulo, ID 8ae795baa674, modelo glm-5.2:cloud.\n- Job não é crítico: sem retry automático, próxima execução ocorre no horário normal do dia seguinte em caso de falha.\n- Usuário aprovou a configuração.",
+          "passed": true,
+          "truncated": false
+        }
+      ],
+      "empty_content_count": 0,
+      "error": null,
+      "leaked_reasoning_count": 0,
+      "mean_latency_ms": 5815,
+      "median_latency_ms": 5537,
+      "model": "ornith-ai/Ornith-1.5-9B-Q4_K_M",
+      "pass_rate": 0.8,
+      "passed": 4,
+      "task": "compression",
+      "total": 5,
+      "truncated_count": 1
+    }
+  ],
+  "task": "compression"
+}

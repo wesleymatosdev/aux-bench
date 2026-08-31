@@ -1,0 +1,30 @@
+suite: compression (5 cases)
+       Hermes auxiliary compression: condense a long conversation excerpt into a compact factual summary. Tests long-input handling, faithfulness (no invented facts), and instruction-following under load.
+host:  http://127.0.0.1:11435 (openai)
+models (1): ornith-ai/Ornith-1.5-9B-Q4_K_M
+
+== ornith-ai/Ornith-1.5-9B-Q4_K_M
+   debug_session          FAIL     22ms  
+      -> request error: http status: 500
+   config_decision        FAIL      4ms  
+      -> request error: http status: 500
+   code_review            FAIL     11ms  
+      -> request error: http status: 500
+   planning_thread        FAIL     19ms  
+      -> request error: http status: 500
+   portuguese_thread      FAIL     11ms  
+      -> request error: http status: 500
+   pass 0/5  median 0ms
+
+
+RESULTS — compression
+model                                              pass    median      mean   empty    leak   trunc
+----------------------------------------------------------------------------------------------------
+ornith-ai/Ornith-1.5-9B-Q4_K_M                       0/5        0ms        0ms       5       0       0
+
+NO VIABLE LOCAL MODEL — every candidate failed every case
+
+request errors:
+  1x http status: 500
+
+wrote results/compression-openai-ornith9b-r2.json

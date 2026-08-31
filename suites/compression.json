@@ -2,7 +2,7 @@
   "task": "compression",
   "description": "Hermes auxiliary compression: condense a long conversation excerpt into a compact factual summary. Tests long-input handling, faithfulness (no invented facts), and instruction-following under load.",
   "system": "You compress conversation history. Produce a factual summary in 3-5 short bullet lines starting with '- '. Preserve concrete identifiers: names, file paths, numbers, commands, decisions. Do not invent details. Do not add commentary, preamble, or a closing sentence. Output only the bullet lines.",
-  "options": { "num_predict": 400, "temperature": 0.2 },
+  "options": { "num_predict": 1500, "temperature": 0.2 },
   "cases": [
     {
       "name": "debug_session",

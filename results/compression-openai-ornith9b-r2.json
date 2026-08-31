@@ -1,0 +1,83 @@
+{
+  "api": "openai",
+  "generated_at_unix": 1788182159,
+  "host": "http://127.0.0.1:11435",
+  "results": [
+    {
+      "cases": [
+        {
+          "case": "debug_session",
+          "empty_content": true,
+          "failures": [
+            "request error: http status: 500"
+          ],
+          "latency_ms": 22,
+          "leaked_reasoning": false,
+          "output": "",
+          "passed": false,
+          "truncated": false
+        },
+        {
+          "case": "config_decision",
+          "empty_content": true,
+          "failures": [
+            "request error: http status: 500"
+          ],
+          "latency_ms": 4,
+          "leaked_reasoning": false,
+          "output": "",
+          "passed": false,
+          "truncated": false
+        },
+        {
+          "case": "code_review",
+          "empty_content": true,
+          "failures": [
+            "request error: http status: 500"
+          ],
+          "latency_ms": 11,
+          "leaked_reasoning": false,
+          "output": "",
+          "passed": false,
+          "truncated": false
+        },
+        {
+          "case": "planning_thread",
+          "empty_content": true,
+          "failures": [
+            "request error: http status: 500"
+          ],
+          "latency_ms": 19,
+          "leaked_reasoning": false,
+          "output": "",
+          "passed": false,
+          "truncated": false
+        },
+        {
+          "case": "portuguese_thread",
+          "empty_content": true,
+          "failures": [
+            "request error: http status: 500"
+          ],
+          "latency_ms": 11,
+          "leaked_reasoning": false,
+          "output": "",
+          "passed": false,
+          "truncated": false
+        }
+      ],
+      "empty_content_count": 5,
+      "error": "http status: 500",
+      "leaked_reasoning_count": 0,
+      "mean_latency_ms": 0,
+      "median_latency_ms": 0,
+      "model": "ornith-ai/Ornith-1.5-9B-Q4_K_M",
+      "pass_rate": 0.0,
+      "passed": 0,
+      "task": "compression",
+      "total": 5,
+      "truncated_count": 0
+    }
+  ],
+  "task": "compression"
+}

@@ -1,0 +1,26 @@
+suite: compression (5 cases)
+       Hermes auxiliary compression: condense a long conversation excerpt into a compact factual summary. Tests long-input handling, faithfulness (no invented facts), and instruction-following under load.
+host:  http://127.0.0.1:11435 (openai)
+models (1): ornith-ai/Ornith-1.5-9B-Q4_K_M
+
+== ornith-ai/Ornith-1.5-9B-Q4_K_M
+   debug_session          pass   6193ms  - Benchmark failed with 'unrecognized arguments: --suite' be…
+   config_decision        FAIL   7752ms  - Auxiliary title generation failing with HTTP 404 on model …
+      -> TRUNCATED: token budget exhausted before completion — raise num_predict in the suite (harness fault, not a model verdict)
+   code_review            pass   5537ms  - Reviewed webhook signature code in webhook.rs, finding thr…
+   planning_thread        pass   5173ms  - Repo is ready for public release except the actual push; i…
+   portuguese_thread      pass   4424ms  - Usuário pediu para configurar um cron para rodar todo dia …
+   pass 4/5  median 5537ms
+
+
+RESULTS — compression
+model                                              pass    median      mean   empty    leak   trunc
+----------------------------------------------------------------------------------------------------
+ornith-ai/Ornith-1.5-9B-Q4_K_M                       4/5     5537ms     5815ms       0       0       1
+
+WARNING: 1 case(s) hit the token budget (trunc > 0). These are HARNESS faults, not model verdicts —
+         raise `num_predict` in the suite and re-run before drawing any conclusion about these models.
+
+NO CLEAN WINNER — best is ornith-ai/Ornith-1.5-9B-Q4_K_M at 4/5; do not wire a partial pass into a live slot
+
+wrote results/compression-openai-ornith9b.json
