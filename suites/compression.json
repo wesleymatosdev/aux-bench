@@ -1,0 +1,43 @@
+{
+  "task": "compression",
+  "description": "Hermes auxiliary compression: condense a long conversation excerpt into a compact factual summary. Tests long-input handling, faithfulness (no invented facts), and instruction-following under load.",
+  "system": "You compress conversation history. Produce a factual summary in 3-5 short bullet lines starting with '- '. Preserve concrete identifiers: names, file paths, numbers, commands, decisions. Do not invent details. Do not add commentary, preamble, or a closing sentence. Output only the bullet lines.",
+  "options": { "num_predict": 400, "temperature": 0.2 },
+  "cases": [
+    {
+      "name": "debug_session",
+      "user": "USER: the benchmark keeps dying with 'unrecognized arguments: --suite'\nASSISTANT: I wrapped the run in `git stash -q && python3 bench/benchmark.py --suite hf; git stash pop -q`. The stash reverted benchmark.py to the committed version before the run executed, and that version has no --suite flag. Verified: `git show HEAD:bench/benchmark.py | grep -c suite` returns 0.\nUSER: so commit the harness first?\nASSISTANT: Yes. The harness is prompt-agnostic — only __init__.py holds the prompt. Commit bench/benchmark.py, then prompt v2 separately, so v0.1 vs v2 is a checkout choice. Never stash around long-running commands.\nUSER: ok do that",
+      "max_words": 130,
+      "forbid_substrings": ["Hmm", "the user wants", "Let me", "Here is", "Here's", "In summary", "Sure"],
+      "expect_any": ["stash", "benchmark.py", "--suite"]
+    },
+    {
+      "name": "config_decision",
+      "user": "USER: auxiliary title generation is failing with HTTP 404 model deepseek-v4-flash:cloud\nASSISTANT: That model is dead and also on your do-not-use list. Nine auxiliary slots are pinned to it: approval, compression, curator, kanban_decomposer, mcp, profile_describer, skills_hub, title_generation, triage_specifier, web_extract. Only vision is healthy on gpt-5.4-nano via copilot.\nUSER: use a local one instead\nASSISTANT: Tested qwen3:30b, gemma4:26b, qwen3-30b-64k — all three leak chain-of-thought into the content field and return empty titles. They ignore think:false on both the OpenAI-compat and native Ollama routes.\nUSER: try Ornith and Gemma",
+      "max_words": 130,
+      "forbid_substrings": ["Hmm", "the user wants", "Let me", "Here is", "Here's", "In summary", "Sure"],
+      "expect_any": ["404", "deepseek", "auxiliary", "slot"]
+    },
+    {
+      "name": "code_review",
+      "user": "USER: review the webhook signature code\nASSISTANT: Three findings in webhook.rs. First, verify_signature uses == for comparing HMAC digests, which is timing-attack vulnerable; use a constant-time compare. Second, the timestamp check accepts any age, so replayed requests succeed forever — reject anything older than 300 seconds. Third, when the X-Hub-Signature-256 header is absent the function returns Ok(()) instead of an error, so unsigned requests pass. The third is the critical one.\nUSER: fix all three and add tests\nASSISTANT: Done in commit e485795. Added three tests covering each case, all passing.",
+      "max_words": 130,
+      "forbid_substrings": ["Hmm", "the user wants", "Let me", "Here is", "Here's", "In summary", "Sure"],
+      "expect_any": ["webhook", "hmac", "signature", "timing", "replay"]
+    },
+    {
+      "name": "planning_thread",
+      "user": "USER: what's left before the repo can go public?\nASSISTANT: Four things. The MIT license file is in place and READMEs are rewritten. Six security findings were fixed and verified across commits aeeb1d5 and afed308. A secrets scan came back clean. What remains is the actual push — the repo is at main afed308 locally and has never been pushed to the wesleymatosdev org.\nUSER: any blockers?\nASSISTANT: No technical blockers. The lagune-audit connector at ~/.hermes/scripts/lagune-audit.sh was built but never validated — its first run died on a session limit. That is separate from the push.",
+      "max_words": 130,
+      "forbid_substrings": ["Hmm", "the user wants", "Let me", "Here is", "Here's", "In summary", "Sure"],
+      "expect_any": ["afed308", "push", "mit", "security", "secrets"]
+    },
+    {
+      "name": "portuguese_thread",
+      "user": "USER: preciso configurar um cron pra rodar todo dia de manha\nASSISTANT: Criei o job com schedule '0 9 * * *', rodando as 9h no fuso America/Sao_Paulo. O ID e 8ae795baa674 e ele usa o modelo glm-5.2:cloud.\nUSER: e se falhar?\nASSISTANT: O job nao e critico. Se falhar, nao ha retry automatico — a proxima execucao acontece no horario normal do dia seguinte.\nUSER: beleza, pode deixar assim",
+      "max_words": 130,
+      "forbid_substrings": ["Hmm", "the user wants", "Let me", "Here is", "Here's", "In summary", "Sure"],
+      "expect_any": ["cron", "9", "8ae795baa674", "glm"]
+    }
+  ]
+}
