@@ -1,0 +1,452 @@
+{
+  "api": "ollama",
+  "generated_at_unix": 1788181963,
+  "host": "http://127.0.0.1:11434",
+  "results": [
+    {
+      "cases": [
+        {
+          "case": "classifier_handoff",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 193,
+          "leaked_reasoning": false,
+          "output": "Classifier Benchmark Handoff Resume",
+          "passed": true,
+          "truncated": false
+        },
+        {
+          "case": "rust_port",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 189,
+          "leaked_reasoning": false,
+          "output": "Python to Rust Telegram Port",
+          "passed": true,
+          "truncated": false
+        },
+        {
+          "case": "dns_debug",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 183,
+          "leaked_reasoning": false,
+          "output": "Cloudflare DNS Resolution Troubleshooting",
+          "passed": true,
+          "truncated": false
+        },
+        {
+          "case": "pr_review",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 197,
+          "leaked_reasoning": false,
+          "output": "HMAC Webhook Verification Review",
+          "passed": true,
+          "truncated": false
+        },
+        {
+          "case": "groceries_nontechnical",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 198,
+          "leaked_reasoning": false,
+          "output": "Weekly Meal and Grocery Plan",
+          "passed": true,
+          "truncated": false
+        },
+        {
+          "case": "portuguese_input",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 223,
+          "leaked_reasoning": false,
+          "output": "Configurando Cron Job Diário",
+          "passed": true,
+          "truncated": false
+        }
+      ],
+      "empty_content_count": 0,
+      "error": null,
+      "leaked_reasoning_count": 0,
+      "mean_latency_ms": 197,
+      "median_latency_ms": 195,
+      "model": "gemma4:26b",
+      "pass_rate": 1.0,
+      "passed": 6,
+      "task": "title_generation",
+      "total": 6,
+      "truncated_count": 0
+    },
+    {
+      "cases": [
+        {
+          "case": "classifier_handoff",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 294,
+          "leaked_reasoning": false,
+          "output": "Resuming Classifier Benchmark Handoff",
+          "passed": true,
+          "truncated": false
+        },
+        {
+          "case": "rust_port",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 195,
+          "leaked_reasoning": false,
+          "output": "Porting Python Telegram Script To Rust",
+          "passed": true,
+          "truncated": false
+        },
+        {
+          "case": "dns_debug",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 205,
+          "leaked_reasoning": false,
+          "output": "Cloudflare DNS Subdomain Not Resolving",
+          "passed": true,
+          "truncated": false
+        },
+        {
+          "case": "pr_review",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 199,
+          "leaked_reasoning": false,
+          "output": "Reviewing Hmac Webhook Signature Verification",
+          "passed": true,
+          "truncated": false
+        },
+        {
+          "case": "groceries_nontechnical",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 174,
+          "leaked_reasoning": false,
+          "output": "Weekly Meal Planning and Grocery List",
+          "passed": true,
+          "truncated": false
+        },
+        {
+          "case": "portuguese_input",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 182,
+          "leaked_reasoning": false,
+          "output": "Configurando Cron Job Diário",
+          "passed": true,
+          "truncated": false
+        }
+      ],
+      "empty_content_count": 0,
+      "error": null,
+      "leaked_reasoning_count": 0,
+      "mean_latency_ms": 208,
+      "median_latency_ms": 197,
+      "model": "hf.co/ornith-ai/Ornith-1.5-35B-A3B-GGUF:Q5_K_M",
+      "pass_rate": 1.0,
+      "passed": 6,
+      "task": "title_generation",
+      "total": 6,
+      "truncated_count": 0
+    },
+    {
+      "cases": [
+        {
+          "case": "classifier_handoff",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 4812,
+          "leaked_reasoning": false,
+          "output": "Classifier Benchmark Handoff Resume",
+          "passed": true,
+          "truncated": false
+        },
+        {
+          "case": "rust_port",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 7732,
+          "leaked_reasoning": false,
+          "output": "Python Telegram Alert Rust Subcommand",
+          "passed": true,
+          "truncated": false
+        },
+        {
+          "case": "dns_debug",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 6118,
+          "leaked_reasoning": false,
+          "output": "Cloudflare Subdomain DNS Resolution Debug",
+          "passed": true,
+          "truncated": false
+        },
+        {
+          "case": "pr_review",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 5521,
+          "leaked_reasoning": false,
+          "output": "HMAC Webhook Signature Verification Review",
+          "passed": true,
+          "truncated": false
+        },
+        {
+          "case": "groceries_nontechnical",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 6583,
+          "leaked_reasoning": false,
+          "output": "Weekly Meal Plan Grocery List",
+          "passed": true,
+          "truncated": false
+        },
+        {
+          "case": "portuguese_input",
+          "empty_content": false,
+          "failures": [],
+          "latency_ms": 7143,
+          "leaked_reasoning": false,
+          "output": "Configurando cron job diario manha",
+          "passed": true,
+          "truncated": false
+        }
+      ],
+      "empty_content_count": 0,
+      "error": null,
+      "leaked_reasoning_count": 0,
+      "mean_latency_ms": 6318,
+      "median_latency_ms": 6350,
+      "model": "muse-glimmer:latest",
+      "pass_rate": 1.0,
+      "passed": 6,
+      "task": "title_generation",
+      "total": 6,
+      "truncated_count": 0
+    },
+    {
+      "cases": [
+        {
+          "case": "classifier_handoff",
+          "empty_content": false,
+          "failures": [
+            "contains forbidden \"Hmm\"",
+            "contains forbidden \"the user wants\"",
+            "contains forbidden \"I need to\"",
+            "contains forbidden \"\\n\\n\"",
+            "177 words > max 6"
+          ],
+          "latency_ms": 2492,
+          "leaked_reasoning": true,
+          "output": "Hmm, the user wants me to generate a short conversation title based on \"resuming a classifier benchmark handoff\". They've specified strict rules: only the title, maximum 5 words, no punctuation, quotes, or explanations.\n\nI need to understand the core elements here. \"Resuming\" suggests continuing something paused, \"classifier benchmark\" refers to a machine learning evaluation, and \"handoff\" implies transferring responsibility. The key is to condense this into a concise, natural-sounding title.\n\nConsidering the constraints, I'll aim for brevity while capturing the essence. \"Classifier Benchmark Handoff\" is 3 words but misses the \"resuming\" aspect. \"Resuming Classifier Handoff\" feels more active and fits within the word limit. \n\nI should avoid adding extra words like \"re\" or \"continuing\" to stay under 5 words. \"Benchmark Resumption\" might be too vague. \"Classifier Handoff Resume\" sounds awkward. \n\n\"Resuming Classifier Handoff\" seems perfect: it's exactly 3 words, flows naturally, and covers all critical elements without fluff. It's professional for a tech context and meets all the user's formatting requirements. \n\nDouble-checking: no punctuation, no quotes, just the title. This should be it.\n</think>\n\nResuming Classifier Handoff",
+          "passed": false,
+          "truncated": false
+        },
+        {
+          "case": "rust_port",
+          "empty_content": false,
+          "failures": [
+            "contains forbidden \"Hmm\"",
+            "contains forbidden \"the user wants\"",
+            "contains forbidden \"I need to\"",
+            "contains forbidden \"\\n\\n\"",
+            "176 words > max 6"
+          ],
+          "latency_ms": 3871,
+          "leaked_reasoning": true,
+          "output": "Hmm, the user wants me to generate a short conversation title based on their query about porting a Python Telegram alert script to Rust. They've specified strict rules: only the title, max 5 words, no punctuation or extra text.\n\nLooking at their query: \"porting a python telegram alert script to a native rust subcommand\". I need to distill this into a concise title under 5 words. Key elements are \"porting\", \"Python\", \"Telegram\", \"Rust\", and \"subcommand\". \n\nThe core action is porting, so \"Rust Port\" captures the essence. \"Telegram\" is important but might be redundant since \"alert\" implies Telegram in context. \"Subcommand\" feels too specific for a title. \n\nI'll aim for brevity: \"Rust Port\" (2 words) covers the main transition. \"Python to Rust\" would be 3 words but less punchy. \"Telegram Rust Port\" is 3 words but \"Telegram\" might not be necessary in the title. \n\nChecking word count: \"Rust Port\" is exactly 2 words. It's clean, implies the porting effort, and fits all constraints. No punctuation needed. \n\nFinal decision: \"Rust Port\" meets all requirements perfectly.\n</think>\n\nRust Port",
+          "passed": false,
+          "truncated": false
+        },
+        {
+          "case": "dns_debug",
+          "empty_content": false,
+          "failures": [
+            "contains forbidden \"Hmm\"",
+            "contains forbidden \"I need to\"",
+            "contains forbidden \"\\n\\n\"",
+            "175 words > max 6"
+          ],
+          "latency_ms": 3565,
+          "leaked_reasoning": true,
+          "output": "Hmm, the user is asking me to generate a short conversation title about debugging Cloudflare DNS records for a subdomain that's not resolving. They've specified strict rules: only the title, maximum 5 words, no punctuation, quotes, or explanations.\n\nI need to focus on the core issue: Cloudflare DNS records not resolving for a subdomain. The key elements are \"Cloudflare,\" \"DNS,\" \"subdomain,\" and \"not resolving.\" I should keep it concise and direct.\n\nBrainstorming possible titles: \"Cloudflare DNS subdomain not resolving\" is 5 words exactly. That covers all critical parts without fluff. Other options like \"Subdomain DNS resolution failure\" miss Cloudflare, which is central to the problem. \"Cloudflare DNS issue\" is too vague.\n\nThe user seems technical—probably a developer or sysadmin troubleshooting a live problem. They want a quick, clear title for notes or a chat, so brevity is key. No need for extra words; just the essence.\n\nDouble-checking: \"Cloudflare DNS subdomain not resolving\" is 5 words, no punctuation, and directly addresses the query. Perfect. I'll output that exactly as specified.\n</think>\n\nCloudflare DNS subdomain not resolving",
+          "passed": false,
+          "truncated": false
+        },
+        {
+          "case": "pr_review",
+          "empty_content": false,
+          "failures": [
+            "contains forbidden \"Hmm\"",
+            "contains forbidden \"the user wants\"",
+            "contains forbidden \"I need to\"",
+            "contains forbidden \"\\n\\n\"",
+            "303 words > max 6"
+          ],
+          "latency_ms": 7150,
+          "leaked_reasoning": true,
+          "output": "Hmm, the user wants me to generate a short conversation title about reviewing a pull request that adds HMAC webhook signature verification. They've specified strict rules: only the title, maximum 5 words, no punctuation, quotes, or explanations.\n\nI need to focus on the key elements: \"reviewing,\" \"pull request,\" and \"HMAC webhook signature verification.\" The challenge is to condense this into 5 words or fewer while keeping it clear and professional.\n\nBreaking it down: \"HMAC\" is a standard term in security, so I can use that without spelling it out. \"Webhook signature verification\" is the core feature being added. \"Pull request\" is common in dev contexts, but I can shorten it to \"PR\" to save words.\n\nPossible options: \"HMAC Webhook Verification PR\" – that's 4 words. Or \"PR HMAC Webhook Signing\" – but \"signing\" might not be as precise as \"verification.\" The most accurate term is \"verification\" since it's about checking signatures.\n\nI should avoid redundancy. \"Reviewing\" is implied in the context of a PR, so I can skip it to save words. The title should reflect the content of the PR, not the action of reviewing.\n\nChecking word count: \"HMAC Webhook Verification PR\" – H-M-A-C (1), Webhook (2), Verification (3), PR (4). Perfect, 4 words under the limit.\n\nIs there a better way? \"Webhook HMAC Verification PR\" – same length, but \"HMAC\" usually comes before \"webhook\" in tech terms. I'll stick with the first version.\n\nConfirming no punctuation: no commas or anything. Just the words. And it's exactly 4 words, so it fits.\n\nThis title will help the user quickly identify the topic in a list of conversations, which is probably why they need it – for efficiency in code reviews or team communication.\n\nFinal decision: \"HMAC Webhook Verification PR\" is concise, accurate, and meets all the constraints.\n</think>\n\nHMAC Webhook Verification PR",
+          "passed": false,
+          "truncated": false
+        },
+        {
+          "case": "groceries_nontechnical",
+          "empty_content": false,
+          "failures": [
+            "contains forbidden \"Hmm\"",
+            "contains forbidden \"the user wants\"",
+            "contains forbidden \"I need to\"",
+            "contains forbidden \"\\n\\n\"",
+            "190 words > max 6"
+          ],
+          "latency_ms": 4888,
+          "leaked_reasoning": true,
+          "output": "Hmm, the user wants me to generate a short conversation title based on \"planning meals and a grocery list for next week.\" They've specified strict rules: only the title, max 5 words, no punctuation, quotes, or explanations.\n\nI need to distill that phrase into something concise. The key elements are \"planning meals\" and \"grocery list,\" so I should focus on the core action. \"Meal planning\" is a common term that covers both, and \"grocery list\" can be implied or shortened.\n\nConsidering word count, I have to keep it under five words. Options like \"Weekly Meal Plan\" or \"Grocery List Prep\" come to mind, but I need to make it as short as possible. \"Weekly Meal Planning\" is four words, which fits perfectly.\n\nI should avoid adding extra words like \"for next week\" since \"weekly\" already implies that timeframe. Also, no need for \"and\" to save space. Checking the rules again: max five words, no punctuation. \"Weekly Meal Planning\" is exactly four words, clean and direct.\n\nThis title captures the essence without fluff, so it should meet the user's request. I'll output just that phrase as instructed.\n</think>\n\nWeekly Meal Planning",
+          "passed": false,
+          "truncated": false
+        },
+        {
+          "case": "portuguese_input",
+          "empty_content": false,
+          "failures": [
+            "TRUNCATED: token budget exhausted before completion — raise num_predict in the suite (harness fault, not a model verdict)",
+            "contains forbidden \"Hmm\"",
+            "contains forbidden \"the user wants\"",
+            "contains forbidden \"Let me\"",
+            "contains forbidden \"\\n\\n\"",
+            "412 words > max 6"
+          ],
+          "latency_ms": 12533,
+          "leaked_reasoning": true,
+          "output": "Okay, the user wants a short title for a cron job that runs every morning. Let me think. The main points are \"cron job,\" \"every day,\" \"morning.\" Need to keep it under 5 words.\n\n\"Daily Morning Cron\" – that's 3 words. Wait, \"Daily Morning Job\" but they said cron job. Maybe \"Cron Daily Morning\" but that's 3 words. Wait, \"Daily Cron Run\" but \"run\" might not be necessary. Wait, the user specified \"configurando\" which is Portuguese for \"configuring,\" but the title should be in English. So maybe \"Daily Morning Cron\" but maybe \"Morning Cron Job\" but \"job\" is redundant. Wait, the example in the instructions says \"configurando um cron job para rodar todo dia de manha\" so the title should be in English. Let me check the previous examples. The user's instruction says to output the title in English, I assume.\n\nWait, the user's query is in Portuguese, but the output should be the title in English. So \"Daily Morning Cron\" – but maybe \"Daily Cron Job\" but they want it to run every morning. \"Morning Cron Daily\" – no, order matters. \"Cron Daily Morning\" – maybe. Wait, standard terms: \"Daily cron job\" but \"cron job\" is two words. Wait, the title should be maximum 5 words. Let's see: \"Daily Morning Cron\" is 3 words. \"Cron Daily Morning\" is 3. Maybe \"Morning Cron Job\" but \"job\" is part of the term. Wait, the user said \"cron job,\" so maybe \"Daily Cron Job\" but that's 3 words. But they want it to run every morning, so \"Daily Morning Cron\" might be better. Wait, \"Cron Daily Run\" but \"run\" isn't necessary. Hmm. Maybe \"Daily Cron Execution\" but that's not common. The standard term is \"daily cron job.\" But the user wants it to run every morning, so maybe \"Morning Daily Cron.\" Wait, but \"daily\" already means every day. So \"Daily Cron\" is sufficient, but they specified \"every morning,\" so maybe \"Morning Cron Job\" but \"morning\" is the time. Wait, maybe \"Daily Morning Job\" but it's a cron job. Wait, the title should be concise. Let's see, the most common way to refer to a cron job that runs daily is \"daily cron,\" but adding \"morning\" specifies the time. So \"Daily Morning Cron\" – 3 words. That's under 5. Let me check if that's standard. Maybe \"Morning Cron Daily\" but that's not right. \"Cron Daily Morning\" – maybe. Wait, the user's instruction says \"todo dia de manha\" which is \"every day in the morning,\" so",
+          "passed": false,
+          "truncated": true
+        }
+      ],
+      "empty_content_count": 0,
+      "error": null,
+      "leaked_reasoning_count": 6,
+      "mean_latency_ms": 5749,
+      "median_latency_ms": 4379,
+      "model": "qwen3-30b-64k:latest",
+      "pass_rate": 0.0,
+      "passed": 0,
+      "task": "title_generation",
+      "total": 6,
+      "truncated_count": 1
+    },
+    {
+      "cases": [
+        {
+          "case": "classifier_handoff",
+          "empty_content": false,
+          "failures": [
+            "contains forbidden \"Hmm\"",
+            "contains forbidden \"the user wants\"",
+            "contains forbidden \"I need to\"",
+            "contains forbidden \"Let me\"",
+            "contains forbidden \"\\n\\n\"",
+            "260 words > max 6"
+          ],
+          "latency_ms": 5980,
+          "leaked_reasoning": true,
+          "output": "Hmm, the user wants me to generate a short conversation title based on \"resuming a classifier benchmark handoff.\" They've specified strict rules: only the title, max 5 words, no punctuation, quotes, or explanations.\n\nI need to distill \"resuming a classifier benchmark handoff\" into something concise. The key elements are \"resuming,\" \"classifier,\" and \"benchmark handoff.\" But \"handoff\" might be redundant since \"benchmark\" implies a transfer of work.\n\nLet me brainstorm: \"Classifier Benchmark Resume\" is 3 words and captures the core idea. \"Resume\" works as a verb here, meaning to continue. \"Classifier\" is the subject, \"Benchmark\" is the task, and \"Resume\" indicates continuation.\n\nI should check word count: \"Classifier Benchmark Resume\" - that's exactly three words. It's under the five-word limit. No punctuation needed since it's a title.\n\nThe user seems to be in a technical or data science context, probably dealing with machine learning models. They might be a researcher or engineer who needs quick, clear labels for meetings or documents. Their actual need is efficiency—they don't want fluff, just the essence.\n\nDeeper unspoken needs could include reducing cognitive load; they're busy and want to jump straight to the point without reading long titles. By keeping it short, I'm helping them save time and avoid confusion.\n\nI'll go with \"Classifier Benchmark Resume\" as it's direct, professional, and fits all constraints. No other options come to mind that are shorter or clearer. For example, \"Benchmark Handoff Resume\" would be less precise since \"handoff\" isn't necessary.\n\nFinally, I'll output only that phrase, as instructed, to avoid any extra text.\n</think>\n\nClassifier Benchmark Resume",
+          "passed": false,
+          "truncated": false
+        },
+        {
+          "case": "rust_port",
+          "empty_content": false,
+          "failures": [
+            "contains forbidden \"Hmm\"",
+            "contains forbidden \"the user wants\"",
+            "contains forbidden \"I need to\"",
+            "contains forbidden \"\\n\\n\"",
+            "206 words > max 6"
+          ],
+          "latency_ms": 5666,
+          "leaked_reasoning": true,
+          "output": "Hmm, the user wants me to generate a short conversation title about porting a Python Telegram alert script to Rust. They've specified strict rules: only the title, max 5 words, no punctuation, quotes, or explanations.\n\nI need to focus on the core action here - porting a script from Python to Rust. The key elements are \"Python,\" \"Telegram,\" \"alert,\" and \"Rust.\" Since it's a subcommand, I should include that to be precise.\n\nThe user is likely a developer working on optimizing or modernizing their codebase. They might be concerned about performance, reliability, or just learning Rust. Their deeper need could be for efficiency or reducing dependencies, so the title should reflect that transition clearly.\n\nNow, brainstorming short phrases: \"Python to Rust Telegram\" is 4 words but misses \"alert.\" \"Porting Telegram Alert Rust\" is 4 words but \"porting\" might be redundant. \"Rust Telegram Alert Script\" is 4 words and covers the essentials without fluff.\n\nI'll go with \"Rust Telegram Alert Script\" - it's concise, under 5 words, and directly describes the task. It avoids unnecessary terms like \"porting\" since the context implies it, and it's clear for a conversation title.\n\nDouble-checking: 4 words, no punctuation, fits all requirements. Perfect for the output.\n</think>\n\nRust Telegram Alert Script",
+          "passed": false,
+          "truncated": false
+        },
+        {
+          "case": "dns_debug",
+          "empty_content": false,
+          "failures": [
+            "contains forbidden \"Hmm\"",
+            "contains forbidden \"I need to\"",
+            "contains forbidden \"\\n\\n\"",
+            "211 words > max 6"
+          ],
+          "latency_ms": 6253,
+          "leaked_reasoning": true,
+          "output": "Hmm, the user is asking about debugging why Cloudflare DNS records for a subdomain aren't resolving. They want me to generate a short conversation title with specific constraints: maximum 5 words, no punctuation, no quotes, no explanation.\n\nI need to focus on the core issue here. The key elements are \"Cloudflare,\" \"DNS,\" \"subdomain,\" and \"not resolving.\" The user is likely a developer or sysadmin troubleshooting a DNS problem, so they need something concise and actionable for a title.\n\nConsidering the constraints, I should aim for brevity. \"Cloudflare DNS subdomain not resolving\" is exactly 5 words and covers all critical parts: the service (Cloudflare), the system (DNS), the specific part (subdomain), and the problem (not resolving). It's direct and matches what they're describing.\n\nI should avoid adding extra words like \"why\" or \"debugging\" since that would exceed the word limit or make it less concise. The title must be purely descriptive without any fluff.\n\nAlso, ensuring it's under 5 words: \"Cloudflare DNS subdomain not resolving\" – that's five words. Perfect. No punctuation needed, as specified.\n\nThis title will help the user quickly identify the topic in a conversation or log, making it efficient for their debugging process. It's neutral and professional, fitting for a technical context.\n</think>\n\nCloudflare DNS subdomain not resolving",
+          "passed": false,
+          "truncated": false
+        },
+        {
+          "case": "pr_review",
+          "empty_content": false,
+          "failures": [
+            "contains forbidden \"Hmm\"",
+            "contains forbidden \"the user wants\"",
+            "contains forbidden \"I need to\"",
+            "contains forbidden \"Let me\"",
+            "contains forbidden \"\\n\\n\"",
+            "225 words > max 6"
+          ],
+          "latency_ms": 7213,
+          "leaked_reasoning": true,
+          "output": "Hmm, the user wants me to generate a short conversation title about reviewing a pull request that adds HMAC webhook signature verification. They've specified strict rules: only the title, max 5 words, no punctuation, quotes, or explanations.\n\nI need to focus on the key elements: \"reviewing,\" \"pull request,\" and \"HMAC webhook signature verification.\" The challenge is to condense this into 5 words or fewer while being clear and professional.\n\nLet me brainstorm some options. \"HMAC Webhook Verification PR Review\" is 4 words and covers all essentials. \"PR Review HMAC Webhook Signatures\" is also 4 words but might be slightly less precise. \"HMAC Signature Verification PR\" is 3 words but could be misinterpreted as the PR itself being the verification.\n\nI should avoid adding extra words like \"adding\" since the title should be concise. \"Webhook HMAC PR Review\" is 3 words but misses \"signature,\" which is crucial for clarity.\n\nThe most accurate and concise option seems to be \"HMAC Webhook Verification PR Review\" – it's exactly 4 words, includes all critical terms (HMAC, Webhook, Verification, PR Review), and flows naturally in a tech context. It's professional and matches what developers would actually say in a conversation about code reviews.\n\nI'll go with that since it meets all the constraints: under 5 words, no extra fluff, and perfectly describes the scenario.\n</think>\n\nHMAC Webhook Verification PR Review",
+          "passed": false,
+          "truncated": false
+        },
+        {
+          "case": "groceries_nontechnical",
+          "empty_content": false,
+          "failures": [
+            "contains forbidden \"Hmm\"",
+            "contains forbidden \"the user wants\"",
+            "contains forbidden \"I need to\"",
+            "contains forbidden \"\\n\\n\"",
+            "126 words > max 6"
+          ],
+          "latency_ms": 4681,
+          "leaked_reasoning": true,
+          "output": "Hmm, the user wants me to generate a short conversation title based on \"planning meals and a grocery list for next week.\" They've specified strict rules: only the title, max 5 words, no punctuation, quotes, or explanations.\n\nI need to distill this into something concise and natural-sounding. The core elements are \"planning meals\" and \"grocery list\" for \"next week.\" I should avoid adding extra words like \"for\" or \"the\" to keep it under five words.\n\nBrainstorming options: \"Meal Planning Grocery List\" is 4 words and covers both parts. \"Weekly Meal Prep List\" is also 4 words but \"prep\" might imply cooking, not just planning. \"Next Week Meal Plan\" is 4 words but misses \"grocery list.\" \n\n\"Grocery List Meal Planning\" feels a bit off—usually, it's \"meal planning\"\"",
+          "passed": false,
+          "truncated": false
+        },
+        {
+          "case": "portuguese_input",
+          "empty_content": true,
+          "failures": [
+            "empty content"
+          ],
+          "latency_ms": 26,
+          "leaked_reasoning": false,
+          "output": "",
+          "passed": false,
+          "truncated": false
+        }
+      ],
+      "empty_content_count": 1,
+      "error": null,
+      "leaked_reasoning_count": 5,
+      "mean_latency_ms": 4969,
+      "median_latency_ms": 5823,
+      "model": "qwen3:30b",
+      "pass_rate": 0.0,
+      "passed": 0,
+      "task": "title_generation",
+      "total": 6,
+      "truncated_count": 0
+    }
+  ],
+  "task": "title_generation"
+}

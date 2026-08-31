@@ -1,0 +1,78 @@
+suite: title_generation (6 cases)
+       Hermes auxiliary title_generation: produce a short conversation title. Must emit the title in content, not leak chain-of-thought.
+host:  http://127.0.0.1:11434 (ollama)
+models (5): hf.co/ornith-ai/Ornith-1.5-35B-A3B-GGUF:Q5_K_M, muse-glimmer:latest, gemma4:26b, qwen3-30b-64k:latest, qwen3:30b
+
+== hf.co/ornith-ai/Ornith-1.5-35B-A3B-GGUF:Q5_K_M
+   classifier_handoff     pass    294ms  Resuming Classifier Benchmark Handoff
+   rust_port              pass    195ms  Porting Python Telegram Script To Rust
+   dns_debug              pass    205ms  Cloudflare DNS Subdomain Not Resolving
+   pr_review              pass    199ms  Reviewing Hmac Webhook Signature Verification
+   groceries_nontechnical pass    174ms  Weekly Meal Planning and Grocery List
+   portuguese_input       pass    182ms  Configurando Cron Job Diário
+   pass 6/6  median 197ms
+
+== muse-glimmer:latest
+   classifier_handoff     pass   4812ms  Classifier Benchmark Handoff Resume
+   rust_port              pass   7732ms  Python Telegram Alert Rust Subcommand
+   dns_debug              pass   6118ms  Cloudflare Subdomain DNS Resolution Debug
+   pr_review              pass   5521ms  HMAC Webhook Signature Verification Review
+   groceries_nontechnical pass   6583ms  Weekly Meal Plan Grocery List
+   portuguese_input       pass   7143ms  Configurando cron job diario manha
+   pass 6/6  median 6350ms
+
+== gemma4:26b
+   classifier_handoff     pass    193ms  Classifier Benchmark Handoff Resume
+   rust_port              pass    189ms  Python to Rust Telegram Port
+   dns_debug              pass    183ms  Cloudflare DNS Resolution Troubleshooting
+   pr_review              pass    197ms  HMAC Webhook Verification Review
+   groceries_nontechnical pass    198ms  Weekly Meal and Grocery Plan
+   portuguese_input       pass    223ms  Configurando Cron Job Diário
+   pass 6/6  median 195ms
+
+== qwen3-30b-64k:latest
+   classifier_handoff     FAIL   2492ms  Hmm, the user wants me to generate a short conversation titl…
+      -> contains forbidden "Hmm"; contains forbidden "the user wants"; contains forbidden "I need to"; contains forbidden "\n\n"; 177 words > max 6
+   rust_port              FAIL   3871ms  Hmm, the user wants me to generate a short conversation titl…
+      -> contains forbidden "Hmm"; contains forbidden "the user wants"; contains forbidden "I need to"; contains forbidden "\n\n"; 176 words > max 6
+   dns_debug              FAIL   3565ms  Hmm, the user is asking me to generate a short conversation …
+      -> contains forbidden "Hmm"; contains forbidden "I need to"; contains forbidden "\n\n"; 175 words > max 6
+   pr_review              FAIL   7150ms  Hmm, the user wants me to generate a short conversation titl…
+      -> contains forbidden "Hmm"; contains forbidden "the user wants"; contains forbidden "I need to"; contains forbidden "\n\n"; 303 words > max 6
+   groceries_nontechnical FAIL   4888ms  Hmm, the user wants me to generate a short conversation titl…
+      -> contains forbidden "Hmm"; contains forbidden "the user wants"; contains forbidden "I need to"; contains forbidden "\n\n"; 190 words > max 6
+   portuguese_input       FAIL  12533ms  Okay, the user wants a short title for a cron job that runs …
+      -> TRUNCATED: token budget exhausted before completion — raise num_predict in the suite (harness fault, not a model verdict); contains forbidden "Hmm"; contains forbidden "the user wants"; contains forbidden "Let me"; contains forbidden "\n\n"; 412 words > max 6
+   pass 0/6  median 4379ms
+
+== qwen3:30b
+   classifier_handoff     FAIL   5980ms  Hmm, the user wants me to generate a short conversation titl…
+      -> contains forbidden "Hmm"; contains forbidden "the user wants"; contains forbidden "I need to"; contains forbidden "Let me"; contains forbidden "\n\n"; 260 words > max 6
+   rust_port              FAIL   5666ms  Hmm, the user wants me to generate a short conversation titl…
+      -> contains forbidden "Hmm"; contains forbidden "the user wants"; contains forbidden "I need to"; contains forbidden "\n\n"; 206 words > max 6
+   dns_debug              FAIL   6253ms  Hmm, the user is asking about debugging why Cloudflare DNS r…
+      -> contains forbidden "Hmm"; contains forbidden "I need to"; contains forbidden "\n\n"; 211 words > max 6
+   pr_review              FAIL   7213ms  Hmm, the user wants me to generate a short conversation titl…
+      -> contains forbidden "Hmm"; contains forbidden "the user wants"; contains forbidden "I need to"; contains forbidden "Let me"; contains forbidden "\n\n"; 225 words > max 6
+   groceries_nontechnical FAIL   4681ms  Hmm, the user wants me to generate a short conversation titl…
+      -> contains forbidden "Hmm"; contains forbidden "the user wants"; contains forbidden "I need to"; contains forbidden "\n\n"; 126 words > max 6
+   portuguese_input       FAIL     26ms  
+      -> empty content
+   pass 0/6  median 5823ms
+
+
+RESULTS — title_generation
+model                                              pass    median      mean   empty    leak   trunc
+----------------------------------------------------------------------------------------------------
+gemma4:26b                                           6/6      195ms      197ms       0       0       0
+hf.co/ornith-ai/Ornith-1.5-35B-A3B-GGUF:Q5_K_M       6/6      197ms      208ms       0       0       0
+muse-glimmer:latest                                  6/6     6350ms     6318ms       0       0       0
+qwen3-30b-64k:latest                                 0/6     4379ms     5749ms       0       6       1
+qwen3:30b                                            0/6     5823ms     4969ms       1       5       0
+
+WARNING: 1 case(s) hit the token budget (trunc > 0). These are HARNESS faults, not model verdicts —
+         raise `num_predict` in the suite and re-run before drawing any conclusion about these models.
+
+WINNER: gemma4:26b — 6/6 cases, 195ms median
+
+wrote results/title_generation-ollama-fixed.json
