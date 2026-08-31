@@ -1,0 +1,50 @@
+{
+  "task": "title_generation",
+  "description": "Hermes auxiliary title_generation: produce a short conversation title. Must emit the title in content, not leak chain-of-thought.",
+  "system": "You generate short conversation titles. Output ONLY the title. Maximum 5 words. No punctuation, no quotes, no explanation, no preamble.",
+  "options": { "num_predict": 40, "temperature": 0.3 },
+  "cases": [
+    {
+      "name": "classifier_handoff",
+      "user": "resuming a classifier benchmark handoff",
+      "max_words": 6,
+      "forbid_substrings": ["Hmm", "the user wants", "First,", "I need to", "Let me", "\n\n"],
+      "expect_any": ["classifier", "benchmark", "handoff", "resume", "resuming"]
+    },
+    {
+      "name": "rust_port",
+      "user": "porting a python telegram alert script to a native rust subcommand",
+      "max_words": 6,
+      "forbid_substrings": ["Hmm", "the user wants", "First,", "I need to", "Let me", "\n\n"],
+      "expect_any": ["rust", "port", "porting", "telegram", "alert"]
+    },
+    {
+      "name": "dns_debug",
+      "user": "debugging why cloudflare dns records for a subdomain are not resolving",
+      "max_words": 6,
+      "forbid_substrings": ["Hmm", "the user wants", "First,", "I need to", "Let me", "\n\n"],
+      "expect_any": ["dns", "cloudflare", "subdomain", "resolve", "resolving", "debug"]
+    },
+    {
+      "name": "pr_review",
+      "user": "reviewing a pull request that adds hmac webhook signature verification",
+      "max_words": 6,
+      "forbid_substrings": ["Hmm", "the user wants", "First,", "I need to", "Let me", "\n\n"],
+      "expect_any": ["pr", "pull", "review", "webhook", "hmac", "signature"]
+    },
+    {
+      "name": "groceries_nontechnical",
+      "user": "planning meals and a grocery list for next week",
+      "max_words": 6,
+      "forbid_substrings": ["Hmm", "the user wants", "First,", "I need to", "Let me", "\n\n"],
+      "expect_any": ["meal", "meals", "grocery", "groceries", "planning", "plan", "week"]
+    },
+    {
+      "name": "portuguese_input",
+      "user": "configurando um cron job para rodar todo dia de manha",
+      "max_words": 6,
+      "forbid_substrings": ["Hmm", "the user wants", "First,", "I need to", "Let me", "\n\n"],
+      "expect_any": ["cron", "job", "agend", "config", "diario", "daily", "manha", "morning", "schedul"]
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+suite: title_generation (6 cases)
+       Hermes auxiliary title_generation: produce a short conversation title. Must emit the title in content, not leak chain-of-thought.
+host:  http://127.0.0.1:11434
+models (5): hf.co/ornith-ai/Ornith-1.5-35B-A3B-GGUF:Q5_K_M, muse-glimmer:latest, gemma4:26b, qwen3-30b-64k:latest, qwen3:30b
+
+== hf.co/ornith-ai/Ornith-1.5-35B-A3B-GGUF:Q5_K_M
+   classifier_handoff     pass  21641ms  Resuming Classifier Benchmark Handoff
+   rust_port              pass  16583ms  Porting Python Telegram Script To Rust
+   dns_debug              pass  16602ms  Cloudflare DNS Subdomain Not Resolving
+   pr_review              pass  16611ms  Reviewing PR Hmac Webhook Signature Verification
+   groceries_nontechnical pass  16672ms  Meal Planning and Grocery List
+   portuguese_input       pass  15597ms  Configurando Cron Job Diário
+   pass 6/6  median 16606ms
+
+== muse-glimmer:latest
+   classifier_handoff     FAIL  23052ms  
+      -> empty content
+   rust_port              FAIL  22030ms  
+      -> empty content
+   dns_debug              FAIL  22047ms  
+      -> empty content
+   pr_review              FAIL  22025ms  
+      -> empty content
+   groceries_nontechnical FAIL  22065ms  
+      -> empty content
+   portuguese_input       FAIL  15311ms  
+      -> empty content
+   pass 0/6  median 22038ms
+
+== gemma4:26b
+   classifier_handoff     pass  17335ms  Classifier Benchmark Handoff Resumed
+   rust_port              pass  17298ms  Python to Rust Telegram Port
+   dns_debug              pass  13992ms  Cloudflare Subdomain DNS Troubleshooting
+   pr_review              pass  17334ms  HMAC Webhook Verification Review
+   groceries_nontechnical pass  17062ms  Weekly Meal and Grocery Plan
+   portuguese_input       pass  11651ms  Configurando Cron Job Diário
+   pass 6/6  median 17180ms
+
+== qwen3-30b-64k:latest
+   classifier_handoff     FAIL  10430ms  Hmm, the user wants me to generate a short conversation titl…
+      -> contains forbidden "Hmm"; contains forbidden "the user wants"; 30 words > max 6
+   rust_port              FAIL    454ms  Hmm, the user wants me to generate a short conversation titl…
+      -> contains forbidden "Hmm"; contains forbidden "the user wants"; 33 words > max 6
+   dns_debug              FAIL    428ms  Hmm, the user is asking about debugging why Cloudflare DNS r…
+      -> contains forbidden "Hmm"; 32 words > max 6
+   pr_review              FAIL    420ms  Hmm, the user wants me to generate a short conversation titl…
+      -> contains forbidden "Hmm"; contains forbidden "the user wants"; 33 words > max 6
+   groceries_nontechnical FAIL    405ms  Hmm, the user wants me to generate a short conversation titl…
+      -> contains forbidden "Hmm"; contains forbidden "the user wants"; 32 words > max 6
+   portuguese_input       FAIL    408ms  Okay, the user wants a short conversation title about settin…
+      -> contains forbidden "the user wants"; contains forbidden "Let me"; 33 words > max 6
+   pass 0/6  median 424ms
+
+== qwen3:30b
+   classifier_handoff     FAIL    464ms  Hmm, the user wants me to generate a short conversation titl…
+      -> contains forbidden "Hmm"; contains forbidden "the user wants"; 30 words > max 6
+   rust_port              FAIL    409ms  Hmm, the user wants me to generate a short conversation titl…
+      -> contains forbidden "Hmm"; contains forbidden "the user wants"; 33 words > max 6
+   dns_debug              FAIL    413ms  Hmm, the user is asking about debugging why Cloudflare DNS r…
+      -> contains forbidden "Hmm"; contains forbidden "\n\n"; 32 words > max 6
+   pr_review              FAIL    410ms  Hmm, the user wants me to generate a short conversation titl…
+      -> contains forbidden "Hmm"; contains forbidden "the user wants"; 33 words > max 6
+   groceries_nontechnical FAIL    411ms  Hmm, the user wants me to generate a short conversation titl…
+      -> contains forbidden "Hmm"; contains forbidden "the user wants"; 32 words > max 6
+   portuguese_input       FAIL    420ms  Okay, the user wants a short conversation title about settin…
+      -> contains forbidden "the user wants"; contains forbidden "First,"; contains forbidden "Let me"; contains forbidden "\n\n"; 32 words > max 6
+   pass 0/6  median 412ms
+
+
+RESULTS — title_generation
+model                                              pass    median      mean   empty    leak
+--------------------------------------------------------------------------------------------
+hf.co/ornith-ai/Ornith-1.5-35B-A3B-GGUF:Q5_K_M       6/6    16606ms    17284ms       0       0
+gemma4:26b                                           6/6    17180ms    15778ms       0       0
+qwen3:30b                                            0/6      412ms      421ms       0       6
+qwen3-30b-64k:latest                                 0/6      424ms     2090ms       0       6
+muse-glimmer:latest                                  0/6    22038ms    21088ms       6       0
+
+WINNER: hf.co/ornith-ai/Ornith-1.5-35B-A3B-GGUF:Q5_K_M — 6/6 cases, 16606ms median
+
+wrote results/title_generation-local.json
