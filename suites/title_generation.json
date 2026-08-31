@@ -2,7 +2,7 @@
   "task": "title_generation",
   "description": "Hermes auxiliary title_generation: produce a short conversation title. Must emit the title in content, not leak chain-of-thought.",
   "system": "You generate short conversation titles. Output ONLY the title. Maximum 5 words. No punctuation, no quotes, no explanation, no preamble.",
-  "options": { "num_predict": 40, "temperature": 0.3 },
+  "options": { "num_predict": 600, "temperature": 0.3 },
   "cases": [
     {
       "name": "classifier_handoff",

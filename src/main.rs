@@ -70,6 +70,7 @@ struct CaseResult {
     failures: Vec<String>,
     empty_content: bool,
     leaked_reasoning: bool,
+    truncated: bool,
 }
 
 #[derive(Debug, Serialize, Clone)]
@@ -83,6 +84,7 @@ struct ModelResult {
     mean_latency_ms: u128,
     empty_content_count: usize,
     leaked_reasoning_count: usize,
+    truncated_count: usize,
     error: Option<String>,
     cases: Vec<CaseResult>,
 }
@@ -396,8 +398,9 @@ fn run_model(
         let latency_ms = started.elapsed().as_millis();
 
         match resp {
-            Ok((content, reasoning)) => {
-                let (passed, failures, empty, leaked) = score(&content, &reasoning, case);
+            Ok((content, reasoning, truncated)) => {
+                let (passed, failures, empty, leaked) =
+                    score(&content, &reasoning, truncated, case);
                 latencies.push(latency_ms);
                 cases.push(CaseResult {
                     case: case.name.clone(),
@@ -407,6 +410,7 @@ fn run_model(
                     failures,
                     empty_content: empty,
                     leaked_reasoning: leaked,
+                    truncated,
                 });
             }
             Err(e) => {
@@ -421,6 +425,7 @@ fn run_model(
                     failures: vec![format!("request error: {e}")],
                     empty_content: true,
                     leaked_reasoning: false,
+                    truncated: false,
                 });
             }
         }
@@ -446,14 +451,15 @@ fn run_model(
         },
         empty_content_count: cases.iter().filter(|c| c.empty_content).count(),
         leaked_reasoning_count: cases.iter().filter(|c| c.leaked_reasoning).count(),
+        truncated_count: cases.iter().filter(|c| c.truncated).count(),
         error: hard_error,
         cases,
     }
 }
 
-/// Returns (content, reasoning). Ollama's native /api/chat keeps thinking in a
-/// separate `thinking` field when the model honours think:false; models that
-/// ignore it dump chain-of-thought straight into content.
+/// Returns (content, reasoning, truncated). `truncated` means the model ran out
+/// of token budget before finishing — a harness artifact, not a model failure,
+/// and it must never be scored as one.
 fn chat(
     host: &str,
     model: &str,
@@ -463,7 +469,7 @@ fn chat(
     timeout_s: u64,
     keep_alive: &str,
     api: Api,
-) -> Result<(String, String), String> {
+) -> Result<(String, String, bool), String> {
     match api {
         Api::Ollama => chat_ollama(host, model, system, user, options, timeout_s, keep_alive),
         Api::OpenAi => chat_openai(host, model, system, user, options, timeout_s),
@@ -481,7 +487,7 @@ fn chat_openai(
     user: &str,
     options: &Value,
     timeout_s: u64,
-) -> Result<(String, String), String> {
+) -> Result<(String, String, bool), String> {
     let url = format!("{}/v1/chat/completions", host.trim_end_matches('/'));
     let mut payload = json!({
         "model": model,
@@ -522,13 +528,20 @@ fn chat_openai(
         return Err(msg);
     }
 
-    let msg = body
+    let choice = body
         .get("choices")
         .and_then(|c| c.as_array())
         .and_then(|a| a.first())
-        .and_then(|c| c.get("message"))
         .cloned()
         .unwrap_or(Value::Null);
+
+    let truncated = choice
+        .get("finish_reason")
+        .and_then(|f| f.as_str())
+        .map(|f| f == "length")
+        .unwrap_or(false);
+
+    let msg = choice.get("message").cloned().unwrap_or(Value::Null);
 
     let content = msg
         .get("content")
@@ -544,7 +557,7 @@ fn chat_openai(
         .trim()
         .to_string();
 
-    Ok((content, reasoning))
+    Ok((content, reasoning, truncated))
 }
 
 fn chat_ollama(
@@ -555,7 +568,7 @@ fn chat_ollama(
     options: &Value,
     timeout_s: u64,
     keep_alive: &str,
-) -> Result<(String, String), String> {
+) -> Result<(String, String, bool), String> {
     let url = format!("{host}/api/chat");
     let mut payload = json!({
         "model": model,
@@ -596,13 +609,38 @@ fn chat_ollama(
         .trim()
         .to_string();
 
-    Ok((content, reasoning))
+    // Ollama reports `done_reason: "length"` when num_predict was exhausted.
+    let truncated = body
+        .get("done_reason")
+        .and_then(|d| d.as_str())
+        .map(|d| d == "length")
+        .unwrap_or(false);
+
+    Ok((content, reasoning, truncated))
 }
 
 /// (passed, failures, empty_content, leaked_reasoning)
-fn score(content: &str, reasoning: &str, case: &Case) -> (bool, Vec<String>, bool, bool) {
+///
+/// `truncated` is a HARNESS fault, not a model fault: the suite's token budget
+/// ran out before the model could answer. It is reported as a distinct failure
+/// so it cannot be misread as "this model can't do the task" — the fix is to
+/// raise `num_predict` in the suite, not to disqualify the model.
+fn score(
+    content: &str,
+    reasoning: &str,
+    truncated: bool,
+    case: &Case,
+) -> (bool, Vec<String>, bool, bool) {
     let mut failures = Vec::new();
     let trimmed = content.trim();
+
+    if truncated {
+        failures.push(
+            "TRUNCATED: token budget exhausted before completion — raise num_predict in the suite \
+             (harness fault, not a model verdict)"
+                .to_string(),
+        );
+    }
 
     let empty = trimmed.is_empty();
     if empty {
@@ -688,20 +726,30 @@ fn print_table(task: &str, results: &mut Vec<ModelResult>) {
     println!();
     println!("RESULTS — {task}");
     println!(
-        "{:<48} {:>6} {:>9} {:>9} {:>7} {:>7}",
-        "model", "pass", "median", "mean", "empty", "leak"
+        "{:<48} {:>6} {:>9} {:>9} {:>7} {:>7} {:>7}",
+        "model", "pass", "median", "mean", "empty", "leak", "trunc"
     );
-    println!("{}", "-".repeat(92));
+    println!("{}", "-".repeat(100));
     for r in results.iter() {
         println!(
-            "{:<48} {:>5}/{:<1} {:>8}ms {:>8}ms {:>7} {:>7}",
+            "{:<48} {:>5}/{:<1} {:>8}ms {:>8}ms {:>7} {:>7} {:>7}",
             r.model,
             r.passed,
             r.total,
             r.median_latency_ms,
             r.mean_latency_ms,
             r.empty_content_count,
-            r.leaked_reasoning_count
+            r.leaked_reasoning_count,
+            r.truncated_count
+        );
+    }
+
+    let total_truncated: usize = results.iter().map(|r| r.truncated_count).sum();
+    if total_truncated > 0 {
+        println!(
+            "\nWARNING: {total_truncated} case(s) hit the token budget (trunc > 0). These are \
+             HARNESS faults, not model verdicts —\n         raise `num_predict` in the suite and \
+             re-run before drawing any conclusion about these models."
         );
     }
 
