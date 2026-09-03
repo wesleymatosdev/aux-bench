@@ -1,0 +1,64 @@
+{
+  "generated_at_unix": 1788475191,
+  "zcode_version": "0.16.5",
+  "baseline_lane": "c1",
+  "note_timeouts": "timeout = runner-enforced 900s kill: its own failure class, never scored as model failure",
+  "note_ambient": "zcode_cli_system_wide counts include the lane's own N processes plus unrelated concurrent swarm workers",
+  "lanes": [
+    {
+      "lane": "c1",
+      "concurrency": 1,
+      "runs": 1,
+      "completed": 1,
+      "timeouts": 0,
+      "missing": 0,
+      "subtask_pass_counts": {
+        "s1": 1,
+        "s2": 1,
+        "s3": 1,
+        "s4": 1,
+        "s5": 1
+      },
+      "subtask_pass_rate": {
+        "s1": 1.0,
+        "s2": 1.0,
+        "s3": 1.0,
+        "s4": 1.0,
+        "s5": 1.0
+      },
+      "latency_ms_completed_only": {
+        "min": 21789,
+        "p50": 21789,
+        "p95": 21789,
+        "max": 21789
+      },
+      "zcode_cli_system_wide": {
+        "samples": 4,
+        "min": 3,
+        "mean": 4,
+        "max": 4
+      },
+      "env_before": {
+        "date": "2026-09-03 18:48:36 -0300",
+        "zcode_version": "0.16.5",
+        "memory": "System-wide memory free percentage: 72%",
+        "system_wide_zcode_cli_procs": "3"
+      },
+      "per_run": [
+        {
+          "run": "run-1",
+          "status": "completed",
+          "exit_code": "0",
+          "duration_ms": 21789,
+          "passed_count": 5,
+          "all_passed": true
+        }
+      ],
+      "vs_baseline": {
+        "baseline_lane": "c1",
+        "p50_ratio": 1.0,
+        "p50_delta_ms": 0
+      }
+    }
+  ]
+}
