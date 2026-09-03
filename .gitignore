@@ -1,1 +1,4 @@
 target/
+
+# zcode-concurrency raw evidence stays on disk, untracked
+bench/zcode-concurrency/results/lanes/
