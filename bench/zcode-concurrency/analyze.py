@@ -40,8 +40,12 @@ def fmt_ms(v):
 def analyze_lane(lane_dir):
     m = re.match(r"c(\d+)$", os.path.basename(os.path.normpath(lane_dir)))
     concurrency = int(m.group(1))
+    # only run-<N> dirs are runs; stray run-* files (e.g. driver scripts) in a
+    # lane dir must not crash aggregation
+    run_matches = [d for d in glob.glob(os.path.join(lane_dir, "run-*"))
+                   if re.search(r"run-(\d+)$", d)]
     run_dirs = sorted(
-        glob.glob(os.path.join(lane_dir, "run-*")),
+        run_matches,
         key=lambda d: int(re.search(r"run-(\d+)$", d).group(1)),
     )
 

@@ -1,0 +1,143 @@
+{
+  "generated_at_unix": 1788709939,
+  "zcode_version": "zcode-app-cli 3.11.2-20",
+  "baseline_lane": "c1",
+  "note_timeouts": "timeout = runner-enforced 900s kill: its own failure class, never scored as model failure",
+  "note_ambient": "zcode_cli_system_wide counts include the lane's own N processes plus unrelated concurrent swarm workers",
+  "lanes": [
+    {
+      "lane": "c1",
+      "concurrency": 1,
+      "runs": 1,
+      "completed": 1,
+      "timeouts": 0,
+      "missing": 0,
+      "subtask_pass_counts": {
+        "s1": 1,
+        "s2": 1,
+        "s3": 1,
+        "s4": 1,
+        "s5": 1
+      },
+      "subtask_pass_rate": {
+        "s1": 1.0,
+        "s2": 1.0,
+        "s3": 1.0,
+        "s4": 1.0,
+        "s5": 1.0
+      },
+      "latency_ms_completed_only": {
+        "min": 62754,
+        "p50": 62754,
+        "p95": 62754,
+        "max": 62754
+      },
+      "zcode_cli_system_wide": {
+        "samples": 12,
+        "min": 13,
+        "mean": 13,
+        "max": 13
+      },
+      "env_before": {
+        "date": "2026-09-06 12:30:43 -0300",
+        "zcode_version": "zcode-app-cli 3.11.2-20",
+        "memory": "System-wide memory free percentage: 64%",
+        "system_wide_zcode_cli_procs": "11"
+      },
+      "per_run": [
+        {
+          "run": "run-1",
+          "status": "completed",
+          "exit_code": 0,
+          "duration_ms": 62754,
+          "passed_count": 5,
+          "all_passed": true
+        }
+      ],
+      "vs_baseline": {
+        "baseline_lane": "c1",
+        "p50_ratio": 1.0,
+        "p50_delta_ms": 0
+      }
+    },
+    {
+      "lane": "c4",
+      "concurrency": 4,
+      "runs": 4,
+      "completed": 4,
+      "timeouts": 0,
+      "missing": 0,
+      "subtask_pass_counts": {
+        "s1": 4,
+        "s2": 4,
+        "s3": 4,
+        "s4": 3,
+        "s5": 3
+      },
+      "subtask_pass_rate": {
+        "s1": 1.0,
+        "s2": 1.0,
+        "s3": 1.0,
+        "s4": 0.75,
+        "s5": 0.75
+      },
+      "latency_ms_completed_only": {
+        "min": 51158,
+        "p50": 68481.5,
+        "p95": 106991.05,
+        "max": 113056
+      },
+      "zcode_cli_system_wide": {
+        "samples": 19,
+        "min": 11,
+        "mean": 14,
+        "max": 17
+      },
+      "env_before": {
+        "date": "2026-09-06 12:46:53 -0300",
+        "zcode_version": "zcode-app-cli 3.11.2-20",
+        "memory": "System-wide memory free percentage: 65%",
+        "system_wide_zcode_cli_procs": "9"
+      },
+      "per_run": [
+        {
+          "run": "run-1",
+          "status": "completed",
+          "exit_code": "0",
+          "duration_ms": 113056,
+          "passed_count": 5,
+          "all_passed": true
+        },
+        {
+          "run": "run-2",
+          "status": "completed",
+          "exit_code": "0",
+          "duration_ms": 64340,
+          "passed_count": 5,
+          "all_passed": true
+        },
+        {
+          "run": "run-3",
+          "status": "completed",
+          "exit_code": "1",
+          "duration_ms": 72623,
+          "passed_count": 3,
+          "all_passed": false
+        },
+        {
+          "run": "run-4",
+          "status": "completed",
+          "exit_code": "0",
+          "duration_ms": 51158,
+          "passed_count": 5,
+          "all_passed": true
+        }
+      ],
+      "vs_baseline": {
+        "baseline_lane": "c1",
+        "p50_ratio": 1.091,
+        "p50_delta_ms": 5727
+      }
+    }
+  ]
+}
