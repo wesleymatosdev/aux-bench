@@ -2,3 +2,6 @@ target/
 
 # zcode-concurrency raw evidence stays on disk, untracked
 bench/zcode-concurrency/results/lanes/
+
+# 2026-09-06 swarm-dispatch lane raw evidence stays on disk, untracked
+bench/zcode-concurrency/results/lanes-*/
